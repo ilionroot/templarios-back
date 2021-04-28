@@ -28,15 +28,14 @@ router.post("/register", multer.single("file"), async (req, res) => {
     img: req.file
       ? await (async () => {
           const newPath = await sharp.compressImage(req.file, 500);
-          await uploadFile(newPath)
-            .then((result) => {
-              return result.Location;
-            })
-            .catch((err) =>
+          const source = await uploadFile(newPath)
+            .then()
+            .catch((err) => {
               res.status(500).send({
                 message: "Failed to upload on S3",
-              })
-            );
+              });
+            });
+          return source.Location;
         })()
       : null,
   };
