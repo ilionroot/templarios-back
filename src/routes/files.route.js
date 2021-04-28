@@ -7,6 +7,8 @@ const User = require("../models/user.model");
 const multer = require("../utils/multer");
 const sharp = require("../utils/sharp");
 
+const { uploadFile } = require("../utils/s3");
+
 const authMiddleware = require("../middlewares/auth");
 
 router.use(authMiddleware);
@@ -22,30 +24,36 @@ router.post("/upload", multer.single("file"), async (req, res) => {
               return res.status(403).json({ message: "Invalid user ID!" });
             }
 
-            const filename = newPath.split("/")[newPath.split("/").length - 1];
-
-            let meme = new Meme({
-              src: filename,
-              id_user: req.userId,
-              user: user.username,
-              userImg: user.img,
-              description: req.body.description,
-              date: new Date(Date.now()).toISOString(),
-            });
-
-            await meme.save((err) => {
-              if (err) {
-                return res.status(500).json({
-                  err: err,
+            uploadFile(newPath)
+              .then(async (result) => {
+                let meme = new Meme({
+                  src: result.Location,
+                  id_user: req.userId,
+                  user: user.username,
+                  userImg: user.img,
+                  description: req.body.description,
+                  date: new Date(Date.now()).toISOString(),
                 });
-              }
 
-              return res.status(200).json({
-                message:
-                  "Upload e compressão realizados com sucesso! O novo caminho é:" +
-                  newPath,
+                await meme.save((err) => {
+                  if (err) {
+                    return res.status(500).json({
+                      err: err,
+                    });
+                  }
+
+                  return res.status(200).json({
+                    message:
+                      "Upload e compressão realizados com sucesso! O novo caminho é:" +
+                      newPath,
+                  });
+                });
+              })
+              .catch((err) => {
+                res.status(500).send({
+                  message: "Failed to upload on S3",
+                });
               });
-            });
           })
           .catch((err) => res.status(500).json({ err }));
       })

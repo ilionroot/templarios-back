@@ -8,6 +8,7 @@ const multer = require("../utils/multer");
 const sharp = require("../utils/sharp");
 
 const authConfig = require("../config/auth.json");
+const { uploadFile } = require("../utils/s3");
 
 const generateToken = (params) => {
   return jwt.sign({ id: params.id }, authConfig.secret, {
@@ -27,7 +28,15 @@ router.post("/register", multer.single("file"), async (req, res) => {
     img: req.file
       ? await (async () => {
           const newPath = await sharp.compressImage(req.file, 500);
-          return newPath.split("/")[newPath.split("/").length - 1];
+          uploadFile(newPath)
+            .then((result) => {
+              return result.Location;
+            })
+            .catch((err) =>
+              res.status(500).send({
+                message: "Failed to upload on S3",
+              })
+            );
         })()
       : null,
   };
