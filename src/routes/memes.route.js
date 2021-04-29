@@ -4,11 +4,19 @@ const router = express.Router();
 const Meme = require("../models/meme.model");
 
 router.get("/all", async (req, res) => {
+  const { page } = req.query;
+
   await Meme.find(req.query.id ? { id_user: req.query.id } : {})
+    .skip((req.query.id ? 12 : 10) * (page - 1))
+    .limit(req.query.id ? 12 : 10)
     .sort({ date: -1 })
     .then((memes) => {
-      return res.status(200).json({
-        memes,
+      Meme.countDocuments((err, count) => {
+        // console.log(memes);
+        return res.status(200).json({
+          memes,
+          pages: count / (req.query.id ? 12 : 10),
+        });
       });
     })
     .catch((err) => {
