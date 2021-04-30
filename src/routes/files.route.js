@@ -6,7 +6,6 @@ const User = require("../models/user.model");
 
 const multer = require("../utils/multer");
 const sharp = require("../utils/sharp");
-const thumbler = require("video-thumb");
 
 const { uploadFile } = require("../utils/s3");
 

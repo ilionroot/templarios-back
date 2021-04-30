@@ -1429,11 +1429,6 @@ vary@^1, vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-video-thumb@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/video-thumb/-/video-thumb-0.0.3.tgz#18c6d2f304483b5b555b3759cd4388f6e8a08d08"
-  integrity sha1-GMbS8wRIO1tVWzdZzUOI9uigjQg=
-
 wide-align@^1.1.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/wide-align/-/wide-align-1.1.3.tgz#ae074e6bdc0c14a431e804e624549c633b000457"
