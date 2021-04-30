@@ -12,7 +12,6 @@ router.get("/all", async (req, res) => {
     .sort({ date: -1 })
     .then((memes) => {
       Meme.countDocuments((err, count) => {
-        // console.log(memes);
         return res.status(200).json({
           memes,
           pages: count / (req.query.id ? 12 : 10),
