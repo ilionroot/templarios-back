@@ -5,6 +5,8 @@ exports.compressImage = (file, size) => {
   const newPath = file.path.split(".")[0] + ".webp";
 
   return sharp(file.path)
+    .rotate()
+
     .resize(size)
 
     .toFormat("webp")

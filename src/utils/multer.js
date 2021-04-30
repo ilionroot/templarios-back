@@ -20,7 +20,10 @@ module.exports = multer({
         "video/mp4",
         "video/mpeg4",
         "video/H.263",
+        "video/H.264",
         "video/webm",
+        "video/mov",
+        "video/MOV",
       ].find((formatoAceito) => formatoAceito == file.mimetype);
 
       if (isAccepted) {

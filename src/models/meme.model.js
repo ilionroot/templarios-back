@@ -6,6 +6,8 @@ let MemeSchema = new Schema({
   id_user: { type: String, required: true, max: 100 },
   user: { type: String, required: true, max: 100 },
   description: { type: String, required: true, max: 250 },
+  isVideo: { type: Boolean, required: true },
+  thumbnail: { type: String, required: false },
   userImg: { type: String, required: false, max: 100 },
   date: {
     type: Date,
